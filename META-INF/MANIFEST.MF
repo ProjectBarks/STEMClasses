@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Class-Path: net.projectbarks.stemclasses
+Main-Class: net.projectbarks.stemclasses.STEMClasses
+
