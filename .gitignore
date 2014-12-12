@@ -1,7 +1,10 @@
 # Created by .gitignore support plugin (hsz.mobi)
 ### Java template
 *.class
+
+#Folders
 .idea
+target
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
