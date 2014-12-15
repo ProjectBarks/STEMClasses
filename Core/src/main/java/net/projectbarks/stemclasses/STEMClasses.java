@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.File;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
@@ -63,8 +64,14 @@ public class STEMClasses implements ActionListener, ItemListener {
 
     public static void main(String[] objects) throws URISyntaxException {
         System.setProperty("apple.awt.UIElement", "true");
-        path = STEMClasses.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
-        System.out.println(path);
+        String[] pathSplit = STEMClasses.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath().split(File.separator);
+        path = "/";
+        for (int i = 0; i < pathSplit.length - 1; i++) {
+            String pathItem = pathSplit[i];
+            path += pathItem;
+            path += File.separator;
+        }
+
         R.config.load(path);
         R.config.save(path);
         Runtime.getRuntime().addShutdownHook(new Thread() {

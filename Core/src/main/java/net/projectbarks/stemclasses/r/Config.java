@@ -22,7 +22,7 @@ public class Config {
     private boolean outline = true, autoUpdate = true, animate = true;
     @Getter
     @Setter
-    private Color color = Color.BLUE;
+    private Color color = Color.BLACK;
     @Getter
     @Setter
     private Integer grade = LetterDay.GRADE_9_10;
@@ -32,7 +32,7 @@ public class Config {
         InputStream is;
 
         try {
-            File f = new File(path + "config.properties");
+            File f = new File(path, "config.properties");
             is = new FileInputStream(f);
             props.load(is);
         } catch (Exception e) {
@@ -54,7 +54,7 @@ public class Config {
         props.setProperty("COLOR", String.valueOf(color.getRGB()));
         props.setProperty("GRADE", String.valueOf(grade));
         try {
-            File file = new File(path + "config.properties");
+            File file = new File(path, "config.properties");
             if (file.exists()) {
                 file.delete();
             }

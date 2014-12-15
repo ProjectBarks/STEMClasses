@@ -6,6 +6,7 @@
 
     <groupId>net.projectbarks.stemclasses</groupId>
     <artifactId>STEMClasses</artifactId>
+    <packaging>pom</packaging>
     <version>0.1</version>
 
     <build>
@@ -18,48 +19,19 @@
                     <target>1.6</target>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.2-beta-4</version>
-                <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                    <archive>
-                        <manifest>
-                            <mainClass>net.projectbarks.stemclasses.STEMClasses</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
+    <modules>
+        <module>Deployer</module>
+        <module>Core</module>
+    </modules>
 
     <dependencies>
-        <dependency>
-            <groupId>org.mnode.ical4j</groupId>
-            <artifactId>ical4j</artifactId>
-            <version>1.0.6</version>
-        </dependency>
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>2.6</version>
-        </dependency>
-        <dependency>
-            <groupId>net.java.dev.jna</groupId>
-            <artifactId>jna</artifactId>
-            <version>4.1.0</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
