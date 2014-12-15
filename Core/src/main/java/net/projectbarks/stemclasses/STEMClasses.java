@@ -29,9 +29,9 @@ public class STEMClasses implements ActionListener, ItemListener {
         public void onFind(LetterDay day, String letter, int timeTillNextClass, double totalTime, boolean hasSchool) {
             if (hasSchool) {
                 trayIcon.setImage(R.draw.drawIcon(String.valueOf(timeTillNextClass), timeTillNextClass / totalTime));
-                period.setLabel(String.format("Currently in Class Period: %s", letter));
-                letterDay.setLabel(String.format(String.format("The Letter Day is: %s", day.getLetter())));
-                schedule.setLabel(String.format(String.format("There are Classes: %s", day.getType().getRepresentation())));
+                period.setLabel(String.format("Class Period: %s", letter));
+                letterDay.setLabel(String.format(String.format("Letter Day: %s", day.getLetter())));
+                schedule.setLabel(String.format(String.format("Schedule: %s", day.getType().getRepresentation())));
             } else {
                 trayIcon.setImage(R.draw.drawIcon(R.text.TRAY));
                 period.setLabel("School is Over");
