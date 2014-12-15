@@ -18,10 +18,24 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Written By: brandon on 12/8/14
+ */
 public class DayDataFetcher {
 
     private static final String CALENDAR = "http://www.dasd.org/site/handlers/icalfeed.ashx?MIID=165", IS_SCHEDULE = "Day";
@@ -40,8 +54,7 @@ public class DayDataFetcher {
 
     public DayDataFetcher(final Callback callback) {
         this();
-        ScheduledExecutorService pool = Executors.newScheduledThreadPool(1);
-        pool.scheduleAtFixedRate(new Runnable() {
+        STEMClasses.getPool().scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
                 pullDayInfo(callback);

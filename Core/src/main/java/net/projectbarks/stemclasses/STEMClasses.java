@@ -1,5 +1,6 @@
 package net.projectbarks.stemclasses;
 
+import lombok.Getter;
 import net.projectbarks.stemclasses.letterday.LetterDay;
 import net.projectbarks.stemclasses.r.R;
 
@@ -13,13 +14,31 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
- * Created by brandon on 12/5/14.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Written By: brandon on 12/8/14
  */
 public class STEMClasses implements ActionListener, ItemListener {
 
+    @Getter
     private static String path;
+    @Getter
+    private static ScheduledExecutorService pool;
     private final SystemTray tray;
     private PopupMenu popup;
     private TrayIcon trayIcon;
@@ -50,6 +69,7 @@ public class STEMClasses implements ActionListener, ItemListener {
     };
     private Map<String, MenuItem> menuItems;
     private DayDataFetcher finder;
+
     private STEMClasses() {
         tray = SystemTray.getSystemTray();
         menuItems = new HashMap<String, MenuItem>();
@@ -71,15 +91,16 @@ public class STEMClasses implements ActionListener, ItemListener {
             path += pathItem;
             path += File.separator;
         }
+        pool = Executors.newScheduledThreadPool(5);
 
         R.config.load(path);
         R.config.save(path);
         Runtime.getRuntime().addShutdownHook(new Thread() {
-                                                 @Override
-                                                 public void run() {
-                                                     R.config.save(path);
-                                                 }
-                                             });
+            @Override
+            public void run() {
+                R.config.save(path);
+            }
+        });
         if (!SystemTray.isSupported()) {
             JOptionPane.showMessageDialog(null, R.text.ERROR_MSG_TRAY, R.text.ERROR_TITLE_TRAY, JOptionPane.ERROR_MESSAGE);
             return;

@@ -17,8 +17,21 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**W
- * Created by brandon on 12/14/14.
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Written By: brandon on 12/8/14
  */
 public class LaunchEngine {
 
@@ -76,7 +89,7 @@ public class LaunchEngine {
             Version version = new Version(object.getAsString("tag_name"));
             JSONArray assets = (JSONArray) object.get("assets");
             for (int i2 = 0; i2 < assets.size(); i2++) {
-                version.addDownload(((JSONObject)assets.get(i2)).getAsString("browser_download_url"));
+                version.addDownload(((JSONObject) assets.get(i2)).getAsString("browser_download_url"));
             }
             downloads.add(version);
         }
