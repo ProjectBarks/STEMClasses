@@ -1,0 +1,13 @@
+{
+  "platform": "mac",
+  "jdk": "./resources/jre.zip",
+  "executable": "STEMClasses",
+  "appjar": "./export/Updater.jar",
+  "mainclass": "net/projectbarks/stemclasses/deployer/LaunchEngine",
+  "vmargs": [
+    "-Xmx512m",
+    "-Xms128m"
+  ],
+  "minimizejre": "soft",
+  "outdir": "./export/package/"
+}

@@ -7,24 +7,15 @@
     <groupId>net.projectbarks.stemclasses</groupId>
     <artifactId>STEMClasses</artifactId>
     <packaging>pom</packaging>
-    <version>0.1</version>
+    <version>0.5.0</version>
 
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
-            </plugin>
-        </plugins>
+        <finalName>${project.artifactId}</finalName>
     </build>
 
     <modules>
-        <module>Deployer</module>
-        <module>Core</module>
+        <module>deployer</module>
+        <module>core</module>
     </modules>
 
     <dependencies>

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>STEMClasses</artifactId>
         <groupId>net.projectbarks.stemclasses</groupId>
-        <version>0.1</version>
+        <version>LATEST</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -24,6 +24,8 @@
                     <archive>
                         <manifest>
                             <mainClass>net.projectbarks.stemclasses.STEMClasses</mainClass>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                         </manifest>
                     </archive>
                 </configuration>

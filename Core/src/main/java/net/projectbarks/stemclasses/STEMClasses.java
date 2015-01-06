@@ -44,6 +44,9 @@ public class STEMClasses implements ActionListener, ItemListener {
     private TrayIcon trayIcon;
     private MenuItem period, letterDay, schedule;
     private DayDataFetcher.Callback callback = new DayDataFetcher.Callback() {
+
+        private String cache;
+
         @Override
         public void onFind(LetterDay day, String letter, int timeTillNextClass, double totalTime, boolean hasSchool) {
             if (hasSchool) {
@@ -179,6 +182,8 @@ public class STEMClasses implements ActionListener, ItemListener {
             R.config.setAutoUpdate(getItem(R.text.AUTO_UPDATES, CheckboxMenuItem.class).getState());
         } else if (label.equals(R.text.PREFERENCES)) {
             Preferences.display();
+        } else if (label.equals(R.text.ABOUT)) {
+            About.open();
         }
     }
 

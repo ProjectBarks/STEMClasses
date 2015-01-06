@@ -56,25 +56,26 @@ public class LaunchEngine {
         InvisibleDisplay pane = InvisibleDisplay.display();
         VersionChecker checker = new VersionChecker(logger);
         checker.run();
+        logger.log(Level.INFO, getJavaPath());
         if (checker.isOutOfDate()) {
             pause();
-            pane.getPane().setText("DOWNLOADING");
+            //pane.getPane().setText("DOWNLOADING");
             new VersionDownloader(logger).run();
         }
         Runtime runtime = Runtime.getRuntime();
         try {
-            runtime.exec(new String[]{"java", "-jar", PATH + "STEMClasses.jar"});
+            runtime.exec(new String[]{getJavaPath(), "-jar", PATH + "STEMClasses.jar"});
         } catch (IOException e) {
             StringWriter sw = new StringWriter();
             e.printStackTrace(new PrintWriter(sw));
             logger.log(Level.SEVERE, sw.toString());
         }
         if (!display.isFailed()) {
-            pane.getPane().setText("WELCOME");
+            //pane.getPane().setText("WELCOME");
             pause();
             System.exit(0);
         } else {
-            pane.getPane().setText("ERROR");
+            //pane.getPane().setText("ERROR");
             pause();
             pane.getFrame().dispose();
         }
@@ -111,7 +112,11 @@ public class LaunchEngine {
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
-            logger.log(Level.INFO, "fuck");
+            logger.log(Level.INFO, e.getLocalizedMessage());
         }
+    }
+
+    private static String getJavaPath() {
+        return System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
     }
 }

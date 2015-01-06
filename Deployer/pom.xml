@@ -5,11 +5,11 @@
     <parent>
         <artifactId>STEMClasses</artifactId>
         <groupId>net.projectbarks.stemclasses</groupId>
-        <version>0.1</version>
+        <version>LATEST</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>Deployer</artifactId>
+    <artifactId>deployer</artifactId>
 
     <dependencies>
         <dependency>

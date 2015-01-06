@@ -3,10 +3,15 @@ package net.projectbarks.stemclasses.deployer.views;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.Area;
 import java.awt.geom.RoundRectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 /**
  *  This program is free software: you can redistribute it and/or modify
@@ -36,11 +41,17 @@ public class InvisibleDisplay {
         JFrame editorFrame;
         editorFrame = new JFrame("Java Mac OS X Translucency Demo");
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        ContentPane contentPane = new ContentPane();
+        int w = 400, h = 400;
+        ContentPane contentPane = null;
+        try {
+            contentPane = new ContentPane(ImageIO.read(InvisibleDisplay.class.getResource("/logo.png")), w, h);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         editorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        editorFrame.setLocation((int) ((dim.getWidth() / 2) - 200), (int) ((dim.getHeight() / 2) - 200));
-        editorFrame.setSize(400, 400);
+        editorFrame.setLocation((int) ((dim.getWidth() / 2) - w/2), (int) ((dim.getHeight() / 2) - h/2));
+        editorFrame.setSize(w, h);
         editorFrame.setUndecorated(true);
         editorFrame.setBackground(new Color(0, 255, 0, 0));
         editorFrame.setContentPane(contentPane);
@@ -50,56 +61,39 @@ public class InvisibleDisplay {
         return new InvisibleDisplay(editorFrame, contentPane);
     }
 
-    public static class ContentPane extends JPanel {
+    public static class ContentPane extends JPanel implements ActionListener {
 
-        private String txt;
+        private BufferedImage logo;
+        private int w, h, i;
 
-        public ContentPane() {
+        public ContentPane(BufferedImage logo, int w, int h)  {
             setOpaque(false);
-            txt = "STEM CLASSES";
-        }
-
-        public void setText(String text) {
-            txt = text;
-            repaint();
+            this.logo = logo;
+            this.w = w;
+            this.h = h;
+            this.i = 0;
+            new Timer(5, this).start();
         }
 
         @Override
         protected void paintComponent(Graphics gCast) {
             super.paintComponent(gCast);
             Graphics2D g = (Graphics2D) gCast;
-            Rectangle bounds = new Rectangle(400, 400);
 
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
             g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
             g.setFont(new Font("Arial", Font.BOLD, 36));
 
-            FontMetrics fm = g.getFontMetrics();
-            int sHeight = fm.getAscent() + fm.getDescent(), sWidth = fm.stringWidth(txt);
-            int centerX = (int) ((bounds.getWidth() - fm.stringWidth(txt)) / 2);
-            int centerY = (int) (fm.getAscent() + (bounds.getHeight() - (fm.getAscent() + fm.getDescent())) / 2);
-
-            Area top = new Area(new RoundRectangle2D.Double(centerX - 10, centerY - sHeight - 3, sWidth + 20, sHeight + 20, sHeight + 20, sHeight + 20));
-            top.subtract(new Area(new RoundRectangle2D.Double(centerX - 7, centerY - sHeight, sWidth + 14, sHeight + 14, sHeight + 14, sHeight + 14)));
-
-            Composite original = g.getComposite();
-            g.setComposite(makeComposite(.7f));
-            g.setColor(Color.BLACK);
-            g.fillOval(25, 25, 350, 350);
-            g.setPaint(Color.WHITE);
-            g.setStroke(new BasicStroke(8));
-            g.drawOval(25, 25, 350, 350);
-            g.setComposite(original);
-            g.setColor(Color.BLUE);
-            g.fill(top);
-            g.setColor(Color.WHITE);
-            g.fill(new Area(g.getFont().createGlyphVector(g.getFontRenderContext(), txt).getOutline(centerX, centerY)));
+            i++;
+            int inc = (int) Math.abs(Math.round(25f * Math.sin(i * 1f / 40f)));
+            BufferedImage resize = logo.getSubimage(0, 0, logo.getWidth() - inc, logo.getHeight() - inc);
+            g.drawImage(logo, (w - resize.getWidth()) / 2, (h - resize.getHeight()) / 2, resize.getWidth(), resize.getHeight(), null);
         }
 
-        private AlphaComposite makeComposite(float alpha) {
-            int type = AlphaComposite.SRC_OVER;
-            return (AlphaComposite.getInstance(type, alpha));
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            repaint();
         }
     }
 
