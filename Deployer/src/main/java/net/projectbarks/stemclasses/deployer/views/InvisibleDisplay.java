@@ -49,7 +49,6 @@ public class InvisibleDisplay {
             e.printStackTrace();
         }
         editorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
         editorFrame.setLocation((int) ((dim.getWidth() / 2) - w/2), (int) ((dim.getHeight() / 2) - h/2));
         editorFrame.setSize(w, h);
         editorFrame.setUndecorated(true);

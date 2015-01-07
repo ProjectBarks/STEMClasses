@@ -2,6 +2,8 @@ package net.projectbarks.stemclasses;
 
 import lombok.Getter;
 import net.projectbarks.stemclasses.letterday.LetterDay;
+import net.projectbarks.stemclasses.notification.NSUserNotification;
+import net.projectbarks.stemclasses.notification.NSUserNotificationCenter;
 import net.projectbarks.stemclasses.r.R;
 
 import javax.swing.*;

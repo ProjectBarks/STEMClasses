@@ -5,6 +5,8 @@ import java.awt.geom.Arc2D;
 import java.awt.geom.Area;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  *  This program is free software: you can redistribute it and/or modify
@@ -24,6 +26,16 @@ import java.awt.image.BufferedImage;
  */
 public class ClockRenderer {
 
+    private Font customFont;
+
+    public ClockRenderer() throws IOException, FontFormatException {
+        this(Font.createFont(Font.TRUETYPE_FONT, ClockRenderer.class.getResourceAsStream("/font.ttf")));
+    }
+
+    public ClockRenderer(Font font) {
+        this.customFont = font;
+    }
+
     public Image drawIcon(String text) {
         return drawIcon(text, 0);
     }
@@ -39,7 +51,7 @@ public class ClockRenderer {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
         g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g.setFont(new Font("Arial", Font.BOLD, outline ? 10 : 12));
+        g.setFont(customFont.deriveFont(outline ? 11f : 12f));
         Area top, bottom;
         if (outline) {
             top = new Area(new RoundRectangle2D.Double(0, 0, w, h, h, h));

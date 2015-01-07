@@ -1,7 +1,8 @@
 #!/bin/sh
+: <<'END'
 if  type -p java; then
     _java=java
-    echo 'Found locally instal2led java in PATH'
+    echo 'Found locally installed java in PATH'
 elif [[ -n ${JAVA_HOME} ]] && [[ -x ${JAVA_HOME}/bin/java ]]; then
     echo 'Found locally installed java in JAVA_HOME'
     _java=${JAVA_HOME}/bin/java
@@ -18,6 +19,7 @@ if [ -z ${_java} ] && [ -d ${_java} ]; then
         echo 'System java is up to date!'
     fi
 fi
+END
 
 pushd `dirname $0` > /dev/null
 DIR=`pwd -P`

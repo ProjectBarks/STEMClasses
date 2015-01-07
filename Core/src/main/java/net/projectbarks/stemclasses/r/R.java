@@ -1,5 +1,8 @@
 package net.projectbarks.stemclasses.r;
 
+import java.awt.*;
+import java.io.IOException;
+
 /**
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,12 +21,18 @@ package net.projectbarks.stemclasses.r;
  */
 public class R {
 
-    public static final ClockRenderer draw;
+    public static ClockRenderer draw;
     public static final Config config;
     public static final Text text;
 
     static {
-        draw = new ClockRenderer();
+        try {
+            draw = new ClockRenderer();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+
+        }
         config = new Config();
         text = new Text();
     }
