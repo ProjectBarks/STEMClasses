@@ -46,8 +46,9 @@ public class LoggingDisplay {
         frame.pack();
         frame.setSize(560, 300);
         frame.setResizable(false);
-        frame.setVisible(true);
-        frame.setAutoRequestFocus(true);
+        frame.requestFocus();
+        frame.toFront();
+        frame.setAlwaysOnTop(true);
         frame.setLocation(GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint());
         display.init();
         return display;

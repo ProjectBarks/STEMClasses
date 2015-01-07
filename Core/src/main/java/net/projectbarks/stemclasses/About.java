@@ -23,10 +23,11 @@ public class About extends JDialog {
         dialog.pack();
         dialog.setSize(200, 300);
         dialog.setLocationRelativeTo(null);
-        dialog.setAutoRequestFocus(true);
         dialog.setAlwaysOnTop(true);
         dialog.version.setText(dialog.version.getText().replaceAll("x", version));
         dialog.setResizable(false);
+        dialog.toFront();
+        dialog.requestFocus();
         dialog.setVisible(true);
         return dialog;
     }

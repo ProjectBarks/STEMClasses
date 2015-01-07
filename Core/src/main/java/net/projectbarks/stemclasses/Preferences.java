@@ -41,7 +41,8 @@ public class Preferences {
         frame.setResizable(false);
         frame.setVisible(true);
         frame.setAlwaysOnTop(true);
-        frame.setAutoRequestFocus(true);
+        frame.toFront();
+        frame.requestFocus();
         frame.setLocation(GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint());
         preferences.init();
     }
