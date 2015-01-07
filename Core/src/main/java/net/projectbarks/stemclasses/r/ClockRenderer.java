@@ -1,9 +1,7 @@
 package net.projectbarks.stemclasses.r;
 
 import java.awt.*;
-import java.awt.geom.Arc2D;
-import java.awt.geom.Area;
-import java.awt.geom.RoundRectangle2D;
+import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -74,6 +72,8 @@ public class ClockRenderer {
                 bottom.subtract(top);
             }
         }
+        stretch(bottom, SystemTray.getSystemTray().getTrayIconSize());
+        stretch(top, SystemTray.getSystemTray().getTrayIconSize());
         if (animate) {
             g.setColor(Color.getHSBColor(227, .06f, .63f));
             g.fill(bottom);
@@ -84,6 +84,13 @@ public class ClockRenderer {
             g.fill(bottom);
         }
         return bi;
+    }
+
+    private AffineTransform stretch(Area area, Dimension dim) {
+        AffineTransform transform = new AffineTransform();
+        transform.scale(dim.getWidth() / 20, dim.getHeight() / 20);
+        area.transform(transform);
+        return transform;
     }
 
     private Area getCenteredString(String s, Graphics2D g, int w, int h) {

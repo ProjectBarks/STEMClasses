@@ -7,7 +7,7 @@
     <groupId>net.projectbarks.stemclasses</groupId>
     <artifactId>STEMClasses</artifactId>
     <packaging>pom</packaging>
-    <version>0.5.3</version>
+    <version>0.5.6</version>
 
     <build>
         <finalName>${project.artifactId}</finalName>
