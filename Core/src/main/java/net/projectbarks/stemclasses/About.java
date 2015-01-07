@@ -28,6 +28,7 @@ public class About extends JDialog {
         dialog.setResizable(false);
         dialog.toFront();
         dialog.requestFocus();
+        dialog.setAutoRequestFocus(true);
         dialog.setVisible(true);
         return dialog;
     }

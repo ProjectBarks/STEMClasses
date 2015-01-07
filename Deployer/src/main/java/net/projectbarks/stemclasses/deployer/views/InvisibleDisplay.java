@@ -55,7 +55,7 @@ public class InvisibleDisplay {
         editorFrame.setBackground(new Color(0, 255, 0, 0));
         editorFrame.setContentPane(contentPane);
         editorFrame.setLayout(new BorderLayout());
-
+        editorFrame.setAutoRequestFocus(true);
         editorFrame.setVisible(true);
         return new InvisibleDisplay(editorFrame, contentPane);
     }
