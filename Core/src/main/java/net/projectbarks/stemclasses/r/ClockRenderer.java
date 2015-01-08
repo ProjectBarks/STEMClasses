@@ -46,7 +46,11 @@ public class ClockRenderer {
     }
 
     public Image drawIcon(String text, Color color, boolean outline, boolean animate, double percent) {
+        float scale = getScale();
         int w = (9 * (text.length() <= 2 ? 2 : text.length() + 1)), h = 18;
+        w *= scale;
+        h *= scale;
+
         BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = (Graphics2D) bi.getGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -76,7 +80,6 @@ public class ClockRenderer {
             }
         }
 
-        float scale = getScale();
         AffineTransform transform = AffineTransform.getScaleInstance(scale, scale);
         bottom.transform(transform);
         top.transform(transform);
