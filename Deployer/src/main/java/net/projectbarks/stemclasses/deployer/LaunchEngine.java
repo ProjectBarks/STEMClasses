@@ -45,7 +45,7 @@ public class LaunchEngine {
     private static LoggingDisplay display;
     @Getter
     private static Logger logger;
-
+    
     static {
         PATH = buildPath("Users", System.getProperty("user.name"), "Library", "Application Support", "STEM Classes");
         display = LoggingDisplay.display();

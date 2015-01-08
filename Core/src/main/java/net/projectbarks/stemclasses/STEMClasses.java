@@ -1,5 +1,6 @@
 package net.projectbarks.stemclasses;
 
+import javafx.stage.Screen;
 import lombok.Getter;
 import net.projectbarks.stemclasses.letterday.LetterDay;
 import net.projectbarks.stemclasses.notification.NSUserNotification;
