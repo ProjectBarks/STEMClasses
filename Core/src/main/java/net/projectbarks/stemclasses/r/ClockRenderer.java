@@ -1,12 +1,12 @@
 package net.projectbarks.stemclasses.r;
 
-import javafx.scene.transform.Affine;
-
 import java.awt.*;
-import java.awt.geom.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Arc2D;
+import java.awt.geom.Area;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Field;
 
 /**
