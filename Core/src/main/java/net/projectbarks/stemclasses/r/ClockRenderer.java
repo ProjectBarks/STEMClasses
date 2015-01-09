@@ -77,9 +77,9 @@ public class ClockRenderer {
             }
         }
 
-        AffineTransform transform = AffineTransform.getScaleInstance(scale, scale);
-        bottom.transform(transform);
-        top.transform(transform);
+
+        scaleAndCenter(top, scale);
+        scaleAndCenter(bottom, scale);
 
         if (animate) {
             g.setColor(Color.getHSBColor(227, .06f, .63f));
@@ -106,7 +106,7 @@ public class ClockRenderer {
         //This is the native jvm way of getting the scale.
         try {
             Object property = Toolkit.getDefaultToolkit().getDesktopProperty("apple.awt.contentScaleFactor");
-            nativeScale = property != null ? (Float)property : nativeScale;
+            nativeScale = property != null ? (Float) property : nativeScale;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -127,5 +127,13 @@ public class ClockRenderer {
             }
         }
         return nativeScale > 1 ? nativeScale : alternativeScale;
+    }
+
+    private void scaleAndCenter(Area area, float scale) {
+        Area correct = area.createTransformedArea(AffineTransform.getScaleInstance(scale, scale));
+        area.transform(AffineTransform.getScaleInstance(scale - (scale * .1), scale - (scale * .1)));
+        double xOffset = ((correct.getBounds2D().getHeight() - area.getBounds2D().getHeight())/2);
+        double yOffset = ((correct.getBounds2D().getHeight() - area.getBounds2D().getHeight())/2);
+        area.transform(AffineTransform.getTranslateInstance(xOffset, yOffset));
     }
 }
