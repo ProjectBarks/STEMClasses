@@ -130,8 +130,9 @@ public class ClockRenderer {
     }
 
     private void scaleAndCenter(Area area, float scale) {
+        float subtract = (float) (scale > 1 ? scale * .1 : scale * .2);
         Area correct = area.createTransformedArea(AffineTransform.getScaleInstance(scale, scale));
-        area.transform(AffineTransform.getScaleInstance(scale - (scale * .1), scale - (scale * .1)));
+        area.transform(AffineTransform.getScaleInstance(scale - subtract, scale - subtract));
         double xOffset = ((correct.getBounds2D().getHeight() - area.getBounds2D().getHeight())/2);
         double yOffset = ((correct.getBounds2D().getHeight() - area.getBounds2D().getHeight())/2);
         area.transform(AffineTransform.getTranslateInstance(xOffset, yOffset));
