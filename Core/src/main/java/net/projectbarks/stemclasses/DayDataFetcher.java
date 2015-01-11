@@ -58,6 +58,7 @@ public class DayDataFetcher {
             @Override
             public void run() {
                 pullDayInfo(callback);
+                System.out.println("Test");
             }
         }, 0, 1, TimeUnit.SECONDS);
     }
@@ -72,9 +73,15 @@ public class DayDataFetcher {
             } catch (ParserException e) {
                 callback.onFailed(e.getMessage(), FailCause.FAILED_TO_PARSE);
                 return;
+            } catch (Exception e) {
+                callback.onFailed(e.getMessage(), FailCause.UNKNOWN);
             }
         }
-        updateTime();
+        try {
+            updateTime();
+        } catch (Exception e) {
+            callback.onFailed(e.getMessage(), FailCause.UNKNOWN);
+        }
         callback.onFind(letterDay, period, timeDiff, totalTime, (letterDay.getLetter() != null) && (timeDiff >= 0 && !period.equals("-1")));
     }
 

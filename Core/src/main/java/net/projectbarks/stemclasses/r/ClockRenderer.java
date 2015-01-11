@@ -50,9 +50,13 @@ public class ClockRenderer {
         int w = (9 * (text.length() <= 2 ? 2 : text.length() + 1)), h = 18;
         BufferedImage bi = new BufferedImage((int) (w * scale), (int) (h * scale), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = (Graphics2D) bi.getGraphics();
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+        g.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
         g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+        g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+        g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,RenderingHints.VALUE_STROKE_PURE);
         g.setFont(customFont.deriveFont(outline ? 11f : 12f));
         Area top, bottom;
         if (outline) {
@@ -130,7 +134,7 @@ public class ClockRenderer {
     }
 
     private void scaleAndCenter(Area area, float scale) {
-        float subtract = (float) (scale > 1 ? scale * .1 : scale * .2);
+        float subtract = (float) (scale <= 1 ? scale * .1 : scale * .2);
         Area correct = area.createTransformedArea(AffineTransform.getScaleInstance(scale, scale));
         area.transform(AffineTransform.getScaleInstance(scale - subtract, scale - subtract));
         double xOffset = ((correct.getBounds2D().getHeight() - area.getBounds2D().getHeight())/2);

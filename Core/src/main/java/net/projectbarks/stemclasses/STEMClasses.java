@@ -44,35 +44,7 @@ public class STEMClasses implements ActionListener, ItemListener {
     private static ScheduledExecutorService pool;
     private final SystemTray tray;
     private PopupMenu popup;
-    private TrayIcon trayIcon;
-    private MenuItem period, letterDay, schedule;
-    private DayDataFetcher.Callback callback = new DayDataFetcher.Callback() {
 
-        private String cache;
-
-        @Override
-        public void onFind(LetterDay day, String letter, int timeTillNextClass, double totalTime, boolean hasSchool) {
-            if (hasSchool) {
-                trayIcon.setImage(R.draw.drawIcon(String.valueOf(timeTillNextClass), timeTillNextClass / totalTime));
-                period.setLabel(String.format("Class Period: %s", letter));
-                letterDay.setLabel(String.format(String.format("Letter Day: %s", day.getLetter())));
-                schedule.setLabel(String.format(String.format("Schedule: %s", day.getType().getRepresentation())));
-            } else {
-                trayIcon.setImage(R.draw.drawIcon(R.text.TRAY));
-                period.setLabel("School is Over");
-                letterDay.setLabel("Until then, Have fun!");
-                schedule.setLabel("See you later folks!");
-            }
-        }
-
-        @Override
-        public void onFailed(String message, DayDataFetcher.FailCause exception) {
-            trayIcon.setImage(R.draw.drawIcon("ERROR"));
-            period.setLabel("It appears there");
-            letterDay.setLabel("was an error");
-            schedule.setLabel("Try connecting to wifi!");
-        }
-    };
     private Map<String, MenuItem> menuItems;
     private DayDataFetcher finder;
 
@@ -80,7 +52,6 @@ public class STEMClasses implements ActionListener, ItemListener {
         tray = SystemTray.getSystemTray();
         menuItems = new HashMap<String, MenuItem>();
         setupTray();
-        finder = new DayDataFetcher(callback);
         itemClick(R.config.getGrade() == LetterDay.GRADE_9_10 ? R.text.GRADE_9_10 : R.text.GRADE_11_12);
         if (R.config.isAutoUpdate()) {
             getItem(R.text.AUTO_UPDATES, CheckboxMenuItem.class).setState(R.config.isAutoUpdate());
@@ -119,10 +90,12 @@ public class STEMClasses implements ActionListener, ItemListener {
 
     private void setupTray() {
         popup = new PopupMenu();
-        trayIcon = new TrayIcon(R.draw.drawIcon(R.text.TRAY), "STEM Scheduler");
-        period = addItem(R.text.PERIOD, MenuItem.class);
-        letterDay = addItem(R.text.LETTER_DAY, MenuItem.class);
-        schedule = addItem(R.text.SCHEDULE, MenuItem.class);
+        TrayIcon trayIcon = new TrayIcon(R.draw.drawIcon(R.text.TRAY), "STEM Scheduler");
+        DayFetcherCallback callback = new DayFetcherCallback(trayIcon,
+                addItem(R.text.PERIOD, MenuItem.class),
+                addItem(R.text.LETTER_DAY, MenuItem.class),
+                addItem(R.text.SCHEDULE, MenuItem.class));
+        finder = new DayDataFetcher(callback);
 
         popup.addSeparator();
         addItem(R.text.ABOUT, MenuItem.class);
@@ -141,9 +114,6 @@ public class STEMClasses implements ActionListener, ItemListener {
         addItem(R.text.AUTO_UPDATES, CheckboxMenuItem.class, updates);
         addItem(R.text.QUIT, MenuItem.class);
 
-        period.setEnabled(false);
-        letterDay.setEnabled(false);
-        schedule.setEnabled(false);
         trayIcon.setPopupMenu(popup);
         try {
             tray.add(trayIcon);
