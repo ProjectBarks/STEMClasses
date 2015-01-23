@@ -1,4 +1,4 @@
-package net.projectbarks.stemclasses;
+package net.projectbarks.stemclasses.views;
 
 import net.projectbarks.stemclasses.r.R;
 
@@ -137,10 +137,13 @@ public class Preferences {
     }
 
     private void update() {
-        timePreview.setIcon(new ImageIcon(R.draw.drawIcon("STEM", color.getForeground(), outlineRadioButton.isSelected(),
+        boolean outline = R.config.isOutline();
+        R.config.setOutline(outlineRadioButton.isSelected());
+        timePreview.setIcon(new ImageIcon(R.draw.drawIcon("STEM", color.getForeground(),
                 enabledRadioButton.isSelected(), 0)));
-        notPreview.setIcon(new ImageIcon(R.draw.drawIcon(rotateValue + "", color.getForeground(), outlineRadioButton.isSelected(),
-                enabledRadioButton.isSelected(), (double) rotateValue / 55)));
+        notPreview.setIcon(new ImageIcon(R.draw.drawIcon(rotateValue + "", color.getForeground(),
+                enabledRadioButton.isSelected(), (float) rotateValue / 55)));
+        R.config.setOutline(outline);
     }
 
 }

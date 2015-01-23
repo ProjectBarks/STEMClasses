@@ -1,8 +1,6 @@
-package net.projectbarks.stemclasses;
+package net.projectbarks.stemclasses.views;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class About extends JDialog {
     private JPanel contentPane;

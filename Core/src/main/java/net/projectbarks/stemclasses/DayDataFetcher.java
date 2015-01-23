@@ -16,9 +16,14 @@ import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *  This program is free software: you can redistribute it and/or modify
@@ -38,7 +43,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class DayDataFetcher {
 
-    private static final String CALENDAR = "http://www.dasd.org/site/handlers/icalfeed.ashx?MIID=165", IS_SCHEDULE = "Day";
+    private static final String CALENDAR = "http://www.dasd.org/site/handlers/icalfeed.ashx?MIID=165";
+    private static Pattern IS_SCHEDULE = Pattern.compile("[A-l] Day");
 
     private String period;
     private LetterDay letterDay;
@@ -54,13 +60,13 @@ public class DayDataFetcher {
 
     public DayDataFetcher(final Callback callback) {
         this();
-        STEMClasses.getPool().scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                pullDayInfo(callback);
-                System.out.println("Test");
-            }
-        }, 0, 1, TimeUnit.SECONDS);
+         Scheduler.run(new Runnable() {
+             @Override
+             public void run() {
+                 pullDayInfo(callback);
+                 Scheduler.irregularCheck(this);
+             }
+         }, 0, 1, TimeUnit.SECONDS);
     }
 
     public void pullDayInfo(Callback callback) {
@@ -80,7 +86,10 @@ public class DayDataFetcher {
         try {
             updateTime();
         } catch (Exception e) {
-            callback.onFailed(e.getMessage(), FailCause.UNKNOWN);
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);;
+            callback.onFailed(sw.toString(), FailCause.UNKNOWN);
         }
         callback.onFind(letterDay, period, timeDiff, totalTime, (letterDay.getLetter() != null) && (timeDiff >= 0 && !period.equals("-1")));
     }
@@ -97,9 +106,9 @@ public class DayDataFetcher {
             for (Object unknownComp : calendar.getComponents()) {
                 Component component = (Component) unknownComp;
                 Date date = ((DtStart) component.getProperty(Property.DTSTART)).getDate();
-                String summary = component.getProperty(Property.SUMMARY).getValue();
-                if ((new DateTime(date).toLocalDate()).equals(letterDay.getDate()) && summary.contains(IS_SCHEDULE)) {
-                    letterDay.setLetter(String.valueOf(summary.charAt(0)));
+                Matcher matcher = IS_SCHEDULE.matcher(component.getProperty(Property.SUMMARY).getValue());
+                if ((new DateTime(date).toLocalDate()).equals(letterDay.getDate()) && matcher.find()) {
+                    letterDay.setLetter(String.valueOf(matcher.group(0).charAt(0)));
                     letterDay.setType(LetterDayType.match(letterDay.getLetter()));
                     break;
                 }

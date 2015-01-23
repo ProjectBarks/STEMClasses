@@ -1,11 +1,10 @@
 package net.projectbarks.stemclasses;
 
-import javafx.stage.Screen;
 import lombok.Getter;
 import net.projectbarks.stemclasses.letterday.LetterDay;
-import net.projectbarks.stemclasses.notification.NSUserNotification;
-import net.projectbarks.stemclasses.notification.NSUserNotificationCenter;
 import net.projectbarks.stemclasses.r.R;
+import net.projectbarks.stemclasses.views.About;
+import net.projectbarks.stemclasses.views.Preferences;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,8 +16,6 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 /**
  *  This program is free software: you can redistribute it and/or modify
@@ -40,8 +37,6 @@ public class STEMClasses implements ActionListener, ItemListener {
 
     @Getter
     private static String path;
-    @Getter
-    private static ScheduledExecutorService pool;
     private final SystemTray tray;
     private PopupMenu popup;
 
@@ -68,7 +63,6 @@ public class STEMClasses implements ActionListener, ItemListener {
             path += pathItem;
             path += File.separator;
         }
-        pool = Executors.newScheduledThreadPool(5);
 
         R.config.load(path);
         R.config.save(path);

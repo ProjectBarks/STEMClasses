@@ -49,7 +49,7 @@ public class DayFetcherCallback implements DayDataFetcher.Callback {
             if (cacheCheck(timeTillNextClass + letter)) {
                 return;
             }
-            trayIcon.setImage(R.draw.drawIcon(String.valueOf(timeTillNextClass), timeTillNextClass / totalTime));
+            trayIcon.setImage(R.draw.drawIcon(String.valueOf(timeTillNextClass), (float) (timeTillNextClass / totalTime)));
             period.setLabel(String.format("Class Period: %s", letter));
             letterDay.setLabel(String.format(String.format("Letter Day: %s", day.getLetter())));
             schedule.setLabel(String.format(String.format("Schedule: %s", day.getType().getRepresentation())));
@@ -66,6 +66,7 @@ public class DayFetcherCallback implements DayDataFetcher.Callback {
 
     @Override
     public void onFailed(String message, DayDataFetcher.FailCause exception) {
+        System.out.println(message);
         if (cacheCheck("FAILED")) {
             return;
         }

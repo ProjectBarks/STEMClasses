@@ -47,11 +47,15 @@
             <artifactId>ical4j</artifactId>
             <version>1.0.6</version>
         </dependency>
-
         <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna</artifactId>
             <version>4.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.projectbarks.stemclasses</groupId>
+            <artifactId>deployer</artifactId>
+            <version>LATEST</version>
         </dependency>
     </dependencies>
 

@@ -1,7 +1,11 @@
 package net.projectbarks.stemclasses.r;
 
+import net.projectbarks.stemclasses.r.Render.BaseRenderer;
+import net.projectbarks.stemclasses.r.Render.OutlineRenderer;
+import net.projectbarks.stemclasses.r.Render.SolidRenderer;
+
 import java.awt.*;
-import java.io.IOException;
+import java.awt.geom.Rectangle2D;
 
 /**
  *  This program is free software: you can redistribute it and/or modify
@@ -21,21 +25,35 @@ import java.io.IOException;
  */
 public class R {
 
-    public static ClockRenderer draw;
+    public static BaseRenderer draw;
     public static final Config config;
     public static final Text text;
 
     static {
         try {
-            draw = new ClockRenderer();
+            draw = new BaseRenderer() {
+                private final BaseRenderer outline = new OutlineRenderer(), solid = new SolidRenderer();
+
+                @Override
+                public Image drawIcon(String text, Color color, boolean animate, float percent) {
+                    if (config.isOutline()) {
+                        return outline.drawIcon(text, color, animate, percent);
+                    } else {
+                        return solid.drawIcon(text, color, animate, percent);
+                    }
+                }
+
+                @Override
+                protected void draw(Graphics2D g2d, Rectangle2D bounds, String text, Color color, float scale, boolean animate, float percent) {
+
+                }
+            };
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(1);
-
         }
         config = new Config();
         text = new Text();
     }
-
 
 }
