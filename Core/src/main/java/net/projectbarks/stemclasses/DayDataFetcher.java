@@ -64,7 +64,6 @@ public class DayDataFetcher {
              @Override
              public void run() {
                  pullDayInfo(callback);
-                 Scheduler.irregularCheck(this);
              }
          }, 0, 1, TimeUnit.SECONDS);
     }

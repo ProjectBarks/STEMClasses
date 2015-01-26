@@ -2,7 +2,6 @@ package net.projectbarks.stemclasses;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.projectbarks.stemclasses.letterday.LetterDay;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,95 +26,19 @@ import java.util.concurrent.*;
 public class Scheduler {
 
     @Getter
-    private static ScheduledThreadPoolExecutor pool;
-    private static ExecutorService single;
-    private static Map<Runnable, RunInstance> scheduled;
+    private static ScheduledExecutorService pool;
 
     static {
-        pool = (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(0);
-        single = Executors.newCachedThreadPool();
-        scheduled = new HashMap<Runnable, RunInstance>();
-        single.submit(new Runnable() {
-            @Override
-            public void run() {
-                long previous = 0;
-                while (true) {
-                    if (previous > System.currentTimeMillis()) {
-                        for (Map.Entry<Runnable, RunInstance> entry : scheduled.entrySet()) {
-                            entry.getValue().getFuture().cancel(true);
-                            pool = (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(0);
-                            Scheduler.run(entry.getValue(), entry.getKey());
-                        }
-                    }
-
-                    previous = System.currentTimeMillis();
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
+        pool = Executors.newSingleThreadScheduledExecutor();
     }
 
     public static void run(final Runnable runnable, long delay, long interval, TimeUnit intervalUnit) {
-        RunInstance instance = new RunInstance(delay, interval, intervalUnit);
-        run(instance, runnable);
-        scheduled.put(runnable, instance);
-    }
-
-    public static void irregularCheck(final Runnable runnable) {
-        if (!scheduled.containsKey(runnable)) {
-            return;
-        }
-        RunInstance instance = scheduled.get(runnable);
-        if (instance.getPrevious() > -1 && System.currentTimeMillis() - instance.getPrevious() <= 10) {
-            instance.setFails(instance.getFails() + 1);
+        if (delay < 0 && interval < 0) {
+            pool.schedule(runnable, 15, intervalUnit);
+        } else if (interval < 0) {
+            pool.schedule(runnable, delay, intervalUnit);
         } else {
-            instance.setFails(0);
-        }
-        if (instance.getFails() >= 3) {
-            instance.getFuture().cancel(true);
-            run(instance, runnable);
-            instance.setPrevious(-1);
-            return;
-        }
-        instance.setPrevious(System.currentTimeMillis());
-    }
-
-    private static void run(RunInstance instance, Runnable runnable) {
-        ScheduledFuture<?> future;
-        if (instance.getDelay() < 0 && instance.getInterval() < 0) {
-            future = pool.schedule(runnable, 15, TimeUnit.MILLISECONDS);
-        } else if (instance.getInterval() < 0) {
-            future = pool.schedule(runnable, instance.getDelay(), TimeUnit.MILLISECONDS);
-        } else {
-            future = pool.scheduleAtFixedRate(runnable, 0l, instance.getInterval(), TimeUnit.MILLISECONDS);
-        }
-        instance.setFuture(future);
-    }
-
-    private static class RunInstance {
-        @Getter
-        @Setter
-        private ScheduledFuture<?> future;
-        @Getter
-        private long delay, interval;
-        @Getter
-        @Setter
-        private long previous;
-        @Getter
-        @Setter
-        private long fails;
-
-        public RunInstance(Long delay,  Long interval, TimeUnit unit) {
-            unit = unit == null ? TimeUnit.MILLISECONDS : unit;
-            this.previous = -1;
-            this.fails = 0;
-            this.delay = delay == null ? -1 : unit.toMillis(delay);
-            this.interval = interval == null ? -1 : unit.toMillis(interval);
+             pool.scheduleAtFixedRate(runnable, 0l, interval, intervalUnit);
         }
     }
-
 }
