@@ -24,9 +24,10 @@ import java.awt.event.*;
  */
 public class Preferences {
     private JPanel panel1;
-    private JRadioButton solidRadioButton, outlineRadioButton, enabledRadioButton, disabledRadioButton;
+    private JRadioButton  enabledRadioButton, disabledRadioButton;
     private JButton applyButton, cancelButton;
     private JLabel color, timePreview, notPreview;
+    private JComboBox designMode;
 
     private int rotateValue;
     private boolean end;
@@ -49,7 +50,7 @@ public class Preferences {
     }
 
     public void init() {
-        (R.config.isOutline() ? outlineRadioButton : solidRadioButton).setSelected(true);
+        designMode.setSelectedIndex(R.config.getRenderMode());
         (R.config.isAnimate() ? enabledRadioButton : disabledRadioButton).setSelected(true);
         color.setForeground(R.config.getColor());
 
@@ -58,7 +59,7 @@ public class Preferences {
             @Override
             public void actionPerformed(ActionEvent e) {
                 R.config.setAnimate(enabledRadioButton.isSelected());
-                R.config.setOutline(outlineRadioButton.isSelected());
+                R.config.setRenderMode(designMode.getSelectedIndex());
                 R.config.setColor(color.getForeground());
                 frame.dispose();
             }
@@ -105,12 +106,9 @@ public class Preferences {
             }
         }.start();
 
-        onClickDisableOther(solidRadioButton, outlineRadioButton);
-        onClickDisableOther(outlineRadioButton, solidRadioButton);
         onClickDisableOther(enabledRadioButton, disabledRadioButton);
         onClickDisableOther(disabledRadioButton, enabledRadioButton);
-        onUpdate(solidRadioButton);
-        onUpdate(outlineRadioButton);
+        onUpdate(designMode);
         onUpdate(enabledRadioButton);
         onUpdate(disabledRadioButton);
         onUpdate(color);
@@ -137,13 +135,13 @@ public class Preferences {
     }
 
     private void update() {
-        boolean outline = R.config.isOutline();
-        R.config.setOutline(outlineRadioButton.isSelected());
+        Integer mode = R.config.getRenderMode();
+        R.config.setRenderMode(designMode.getSelectedIndex());
         timePreview.setIcon(new ImageIcon(R.draw.drawIcon("STEM", color.getForeground(),
                 enabledRadioButton.isSelected(), 0)));
         notPreview.setIcon(new ImageIcon(R.draw.drawIcon(rotateValue + "", color.getForeground(),
                 enabledRadioButton.isSelected(), (float) rotateValue / 55)));
-        R.config.setOutline(outline);
+        R.config.setRenderMode(mode);
     }
 
 }

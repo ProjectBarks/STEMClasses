@@ -3,6 +3,7 @@ package net.projectbarks.stemclasses.r;
 import net.projectbarks.stemclasses.r.Render.BaseRenderer;
 import net.projectbarks.stemclasses.r.Render.OutlineRenderer;
 import net.projectbarks.stemclasses.r.Render.SolidRenderer;
+import net.projectbarks.stemclasses.r.Render.TextRenderer;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -32,14 +33,17 @@ public class R {
     static {
         try {
             draw = new BaseRenderer() {
-                private final BaseRenderer outline = new OutlineRenderer(), solid = new SolidRenderer();
+                private final BaseRenderer outline = new OutlineRenderer(), solid = new SolidRenderer(), letter = new TextRenderer();
 
                 @Override
                 public Image drawIcon(String text, Color color, boolean animate, float percent) {
-                    if (config.isOutline()) {
-                        return outline.drawIcon(text, color, animate, percent);
-                    } else {
-                        return solid.drawIcon(text, color, animate, percent);
+                    switch (config.getRenderMode()) {
+                        case 1:
+                            return solid.drawIcon(text, color, animate, percent);
+                        case 2:
+                            return letter.drawIcon(text, color, animate, percent);
+                        default:
+                            return outline.drawIcon(text, color, animate, percent);
                     }
                 }
 

@@ -32,13 +32,13 @@ public class Config {
 
     @Getter
     @Setter
-    private boolean outline = true, autoUpdate = true, animate = true;
+    private boolean autoUpdate = true, animate = true;
     @Getter
     @Setter
     private Color color = Color.BLACK;
     @Getter
     @Setter
-    private Integer grade = LetterDay.GRADE_9_10;
+    private Integer grade = LetterDay.GRADE_9_10, renderMode = 0;
 
     public void load(String path) {
         Properties props = new Properties();
@@ -52,7 +52,7 @@ public class Config {
             e.printStackTrace();
         }
 
-        setOutline(Boolean.valueOf(props.getProperty("OUTLINE", Boolean.toString(outline))));
+        setRenderMode(Integer.valueOf(props.getProperty("RENDERMODE", Integer.toString(renderMode))));
         setAutoUpdate(Boolean.valueOf(props.getProperty("AUTOUPDATE", Boolean.toString(autoUpdate))));
         setAnimate(Boolean.valueOf(props.getProperty("ANIMATE", Boolean.toString(animate))));
         setColor(new Color(new Integer(props.getProperty("COLOR", String.valueOf(color.getRGB())))));
@@ -61,7 +61,7 @@ public class Config {
 
     public void save(String path) {
         Properties props = new Properties();
-        props.setProperty("OUTLINE", Boolean.toString(outline));
+        props.setProperty("RENDERMODE", Integer.toString(renderMode));
         props.setProperty("AUTOUPDATE", Boolean.toString(autoUpdate));
         props.setProperty("ANIMATE", Boolean.toString(animate));
         props.setProperty("COLOR", String.valueOf(color.getRGB()));

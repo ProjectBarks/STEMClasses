@@ -77,6 +77,7 @@ public class DayFetcherCallback implements DayDataFetcher.Callback {
     }
 
     private boolean cacheCheck(String cache) {
+        cache += R.config.getColor().getRGB() + ":" + R.config.getRenderMode()  + ":" + R.config.isAnimate();
         if (this.cache != null && this.cache.equals(cache)) {
             return true;
         }
