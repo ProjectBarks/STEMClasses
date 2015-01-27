@@ -31,6 +31,7 @@ public class Preferences {
 
     private int rotateValue;
     private boolean end;
+    private Thread thread;
 
     public static void display() {
         JFrame frame = new JFrame("Preferences");
@@ -61,36 +62,40 @@ public class Preferences {
                 R.config.setAnimate(enabledRadioButton.isSelected());
                 R.config.setRenderMode(designMode.getSelectedIndex());
                 R.config.setColor(color.getForeground());
+                kill();
                 frame.dispose();
             }
         });
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                kill();
                 frame.dispose();
             }
         });
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                end = true;
+                kill();
                 super.windowClosing(e);
             }
         });
         color.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
                 color.setForeground(JColorChooser.showDialog(panel1, "Choose a color", color.getForeground()));
+                super.mouseClicked(e);
             }
         });
 
         end = false;
-        new Thread() {
+        thread = new Thread() {
             @Override
             public void run() {
+                int l = 0;
                 while (true) {
                     for (int i = 45; i > 0; i--) {
+                        System.out.println("alive-" + i +":"+l);
                         if (end) {
                             return;
                         }
@@ -102,9 +107,11 @@ public class Preferences {
                             e.printStackTrace();
                         }
                     }
+                    l++;
                 }
             }
-        }.start();
+        };
+        thread.start();
 
         onClickDisableOther(enabledRadioButton, disabledRadioButton);
         onClickDisableOther(disabledRadioButton, enabledRadioButton);
@@ -132,6 +139,11 @@ public class Preferences {
                 update();
             }
         });
+    }
+
+    private void kill() {
+        end = true;
+        thread.interrupt();
     }
 
     private void update() {
